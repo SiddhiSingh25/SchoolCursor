@@ -1,52 +1,52 @@
-import Link from "next/link";
+import { Suspense } from "react";
 
 import { siteConfig } from "@/config/site";
-import { Button } from "@/components/ui/button";
-import { Container } from "@/components/layout/container";
+import { HeroSection } from "@/components/sections/home/hero-section";
+import { AboutSection } from "@/components/sections/home/about-section";
+import { FacilitiesSection } from "@/components/sections/home/facilities-section";
+import { GalleryPreviewSection } from "@/components/sections/home/gallery-preview-section";
+import { NoticesPreviewSection } from "@/components/sections/home/notices-preview-section";
+import { EventsPreviewSection } from "@/components/sections/home/events-preview-section";
+import { TestimonialsSection } from "@/components/sections/home/testimonials-section";
+import { AdmissionCTASection } from "@/components/sections/home/admission-cta-section";
+import { HomeLoading } from "@/components/sections/home/home-loading";
+import { getLatestNotices, getUpcomingEvents } from "@/components/sections/home/supabase-content";
+
+async function NoticesAndEvents() {
+  const [notices, events] = await Promise.all([getLatestNotices(3), getUpcomingEvents(3)]);
+
+  return (
+    <>
+      <NoticesPreviewSection notices={notices} />
+      <EventsPreviewSection events={events} />
+    </>
+  );
+}
 
 export default function HomePage() {
   return (
     <div className="bg-background">
-      <section className="border-b">
-        <Container className="py-16 sm:py-24">
-          <div className="grid items-center gap-10 lg:grid-cols-2">
-            <div className="space-y-6">
-              <p className="text-sm font-medium text-muted-foreground">
-                {siteConfig.school.tagline}
-              </p>
-              <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-                {siteConfig.school.name}
-              </h1>
-              <p className="max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
-                A modern, scalable school website starter with a full admin
-                dashboard, Supabase backend, and a clean reusable architecture.
-              </p>
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Link href={siteConfig.links.admissions}>
-                  <Button size="lg">Admissions</Button>
-                </Link>
-                <Link href={siteConfig.links.contact}>
-                  <Button size="lg" variant="outline">
-                    Contact
-                  </Button>
-                </Link>
-              </div>
-            </div>
+      <HeroSection
+        headline={`${siteConfig.school.name}`}
+        subheadline="A premium, modern learning community combining strong academics, character building, and future-ready skills — with a campus experience families love."
+        stats={[
+          { label: "Years of excellence", value: "25+" },
+          { label: "Student–teacher ratio", value: "15:1" },
+          { label: "Clubs & activities", value: "40+" },
+          { label: "Campus satisfaction", value: "98%" },
+        ]}
+      />
 
-            <div className="rounded-2xl border bg-gradient-to-br from-accent to-background p-8">
-              <div className="space-y-3">
-                <p className="text-sm font-medium">Template-ready sections</p>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>Reusable hero + feature blocks</li>
-                  <li>Notices & events driven from database</li>
-                  <li>Gallery backed by Supabase Storage</li>
-                  <li>Inquiry + contact forms with validation</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </section>
+      <AboutSection />
+      <FacilitiesSection />
+      <GalleryPreviewSection />
+
+      <Suspense fallback={<HomeLoading />}>
+        <NoticesAndEvents />
+      </Suspense>
+
+      <TestimonialsSection />
+      <AdmissionCTASection />
     </div>
   );
 }
