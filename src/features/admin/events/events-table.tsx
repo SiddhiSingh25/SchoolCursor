@@ -84,7 +84,7 @@ export function EventsTable() {
           </div>
         ) : query.isError ? (
           <p className="text-sm text-destructive">Failed to load events.</p>
-        ) : query.data.rows.length === 0 ? (
+        ) : query?.data?.rows?.length === 0 ? (
           <p className="text-sm text-muted-foreground">No events found.</p>
         ) : (
           <div className="overflow-x-auto">
@@ -98,7 +98,7 @@ export function EventsTable() {
                 </tr>
               </thead>
               <tbody>
-                {query.data.rows.map((row) => (
+                {query?.data?.rows?.map((row) => (
                   <tr key={row.id} className="border-b last:border-b-0">
                     <td className="py-3 pr-4">
                       <Link className="font-medium hover:underline" href={`/admin/events/${row.id}`}>
