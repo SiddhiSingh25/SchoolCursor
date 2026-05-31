@@ -88,7 +88,7 @@ export function InquiriesTable() {
           </div>
         ) : query.isError ? (
           <p className="text-sm text-destructive">Failed to load inquiries.</p>
-        ) : query.data.rows.length === 0 ? (
+        ) : !query.data?.rows?.length ? (
           <p className="text-sm text-muted-foreground">No inquiries found.</p>
         ) : (
           <div className="overflow-x-auto">
@@ -106,7 +106,7 @@ export function InquiriesTable() {
                 </tr>
               </thead>
               <tbody>
-                {query.data.rows.map((row) => (
+                {query.data?.rows?.map((row) => (
                   <tr key={row.id} className="border-b last:border-b-0 align-top">
                     <td className="py-3 pr-4">
                       <Checkbox

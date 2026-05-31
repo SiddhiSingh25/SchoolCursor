@@ -81,7 +81,7 @@ export function NoticesTable() {
           </div>
         ) : query.isError ? (
           <p className="text-sm text-destructive">Failed to load notices.</p>
-        ) : query.data.rows.length === 0 ? (
+        ) : !query.data?.rows?.length ? (
           <p className="text-sm text-muted-foreground">No notices found.</p>
         ) : (
           <div className="overflow-x-auto">
@@ -95,7 +95,7 @@ export function NoticesTable() {
                 </tr>
               </thead>
               <tbody>
-                {query.data.rows.map((row) => (
+                {query.data?.rows?.map((row) => (
                   <tr key={row.id} className="border-b last:border-b-0">
                     <td className="py-3 pr-4">
                       <Link className="font-medium hover:underline" href={`/admin/notices/${row.id}`}>

@@ -118,11 +118,11 @@ export function GalleryManager() {
             </div>
           ) : list.isError ? (
             <p className="text-sm text-destructive">Failed to load gallery.</p>
-          ) : list.data.length === 0 ? (
+          ) : !list.data?.length ? (
             <p className="text-sm text-muted-foreground">No images uploaded yet.</p>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {list.data.map((row) => (
+              {list.data?.map((row) => (
                 <div key={row.id} className="group overflow-hidden rounded-xl border">
                   <div className="aspect-[4/3] bg-muted">
                     {row.public_url ? (
